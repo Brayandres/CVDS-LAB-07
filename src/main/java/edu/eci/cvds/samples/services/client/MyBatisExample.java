@@ -16,15 +16,19 @@
  */
 package edu.eci.cvds.samples.services.client;
 
-
-
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.Date;
 import java.sql.SQLException;
+
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
 import org.apache.ibatis.session.SqlSessionFactoryBuilder;
+
+import edu.eci.cvds.sampleprj.dao.mybatis.mappers.ItemMapper;
+import edu.eci.cvds.samples.entities.Item;
+import edu.eci.cvds.samples.entities.TipoItem;
 
 /**
  *
@@ -32,51 +36,60 @@ import org.apache.ibatis.session.SqlSessionFactoryBuilder;
  */
 public class MyBatisExample {
 
-    /**
-     * Método que construye una fábrica de sesiones de MyBatis a partir del
-     * archivo de configuración ubicado en src/main/resources
-     *
-     * @return instancia de SQLSessionFactory
-     */
-    public static SqlSessionFactory getSqlSessionFactory() {
-        SqlSessionFactory sqlSessionFactory = null;
-        if (sqlSessionFactory == null) {
-            InputStream inputStream;
-            try {
-                inputStream = Resources.getResourceAsStream("mybatis-config.xml");
-                sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
-            } catch (IOException e) {
-                throw new RuntimeException(e.getCause());
-            }
-        }
-        return sqlSessionFactory;
-    }
+	/**
+	 * Método que construye una fábrica de sesiones de MyBatis a partir del archivo
+	 * de configuración ubicado en src/main/resources
+	 *
+	 * @return instancia de SQLSessionFactory
+	 */
+	public static SqlSessionFactory getSqlSessionFactory() {
+		SqlSessionFactory sqlSessionFactory = null;
+		if (sqlSessionFactory == null) {
+			InputStream inputStream;
+			try {
+				inputStream = Resources.getResourceAsStream("mybatis-config.xml");
+				sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+			} catch (IOException e) {
+				throw new RuntimeException(e.getCause());
+			}
+		}
+		return sqlSessionFactory;
+	}
 
-    /**
-     * Programa principal de ejempo de uso de MyBATIS
-     * @param args
-     * @throws SQLException 
-     */
-    public static void main(String args[]) throws SQLException {
-        SqlSessionFactory sessionfact = getSqlSessionFactory();
+	/**
+	 * Programa principal de ejempo de uso de MyBATIS
+	 * 
+	 * @param args
+	 * @throws SQLException
+	 */
+	//@SuppressWarnings("deprecation")
+	public static void main(String args[]) throws SQLException {
+		SqlSessionFactory sessionfact = getSqlSessionFactory();
+		SqlSession sqlss = sessionfact.openSession();
 
-        SqlSession sqlss = sessionfact.openSession();
+		// ClienteMapper cm = sqlss.getMapper(ClienteMapper.class);
+		// System.out.println(cm.consultarClientes());
+		// System.out.println(cm.consultarCliente(4));
+		// cm.agregarItemRentadoACliente(4, 1, new Date(121, 4, 10), new Date(121, 4,
+		// 15));
 
-        
-        //Crear el mapper y usarlo: 
-        //ClienteMapper cm=sqlss.getMapper(ClienteMapper.class)
-        //cm...
-        
-        
-        
-        sqlss.commit();
-        
-        
-        sqlss.close();
+		//ItemMapper cmItem = sqlss.getMapper(ItemMapper.class);
+		/*
+		Item item = new Item (new TipoItem(1, "Videojuego"),
+							  666,
+							  "Call of Gruty",
+							  "-.-",
+							  new Date(121, 1, 1),
+							  5,
+							  "formatoComun",
+							  "terror");
+		cmItem.insertarItem(item);
+		*/
+		//System.out.println(cmItem.consultarItem(666));
+		//System.out.println(cmItem.consultarItems());
+		
 
-        
-        
-    }
-
-
+		sqlss.commit();
+		sqlss.close();
+	}
 }
